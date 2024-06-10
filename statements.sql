@@ -66,11 +66,12 @@ ORDER BY categorias.nombre_categoria
 -- PASO 1
 CREATE TABLE usuarios_categorias(
 	id_usuario_categoria INT AUTO_INCREMENT PRIMARY KEY,
-    id_usuario INT,
-    id_categoria INT    
+    id_usuario INT NOT NULL,
+    id_categoria INT NOT NULL,
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario)  
 )
 
-ALTER TABLE usuarios_categorias ADD FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario)
+--ALTER TABLE usuarios_categorias ADD FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario)
 ALTER TABLE usuarios_categorias ADD FOREIGN KEY (id_categoria) REFERENCES categorias(id_categoria)
 
 
@@ -99,3 +100,12 @@ WHERE u.id_usuario = uc.id_usuario
 AND u.id_rol = r.id_rol
 AND c.id_categoria = uc.id_categoria
 ORDER BY u.id_usuario
+
+-- solucion
+
+SELECT usuarios.id_usuario, usuarios.nombre, usuarios.apellido, usuarios.email, usuarios.edad, roles.nombre_rol, categorias.nombre_categoria  
+FROM usuarios
+JOIN roles ON  usuarios.id_rol = roles.id_rol
+JOIN usuarios_categorias ON usuarios.id_usuario = usuarios_categorias.id_usuario
+JOIN categorias on usuarios_categorias.id_categoria = categorias.id_categoria
+ORDER BY usuarios.id_usuario
